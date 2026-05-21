@@ -1,7 +1,7 @@
 {
   "name": "andrej-karpathy-skills",
   "description": "Three reminders for LLM coding pitfalls that Claude Code's built-in system prompt does not already cover (stop when confused, every changed line traces to the request, loop on declarative goals). Traditional Chinese (Taiwan) localization fork of forrestchang/andrej-karpathy-skills.",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "author": {
     "name": "yelban"
   },

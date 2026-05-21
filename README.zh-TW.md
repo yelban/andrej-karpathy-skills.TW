@@ -105,20 +105,16 @@ curl -o .claude/commands/dec.md https://raw.githubusercontent.com/yelban/andrej-
 
 ## 為什麼新版這麼短
 
-把[原本四原則](./archived/v1/CLAUDE.md)跟現在 Claude Code Opus 4.7 系統提示詞逐條比對：
+Opus 4.7 系統提示詞已經涵蓋 v1 大部分規則（完整 v1 → v2 逐行對照見 [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd)，英文）：
 
-| 原版原則 | 系統提示詞是否已涵蓋？ |
+| v1 原則 | 系統提示詞已涵蓋？ |
 |---|---|
-| Simplicity First（不加推測性功能、不為一次性程式碼做抽象） | 已涵蓋 — "Don't add features, refactor, or introduce abstractions beyond what the task requires" |
-| Simplicity First（不為不可能情境寫錯誤處理） | 已涵蓋 — "Don't add error handling, fallbacks, or validation for scenarios that can't happen" |
-| Surgical Changes（不重構相鄰程式碼） | 已涵蓋 — "A bug fix doesn't need surrounding cleanup; a one-shot operation doesn't need a helper" |
-| Surgical Changes（符合既有風格、不重新格式化） | 已涵蓋 — "Match the scope of your actions to what was actually requested" |
-| Think Before Coding（明說假設、呈現權衡） | 部分涵蓋 — 系統提示詞涵蓋了探索性回覆；本 skill 補上「困惑時停下」 |
-| Goal-Driven Execution（loop until verified） | 部分涵蓋 — 系統提示詞涵蓋了自我驗證；本 skill 補上使用者端的「宣告式 framing」 |
-
-新版保留的三條 reminder，就是系統提示詞尚未涵蓋或強調不足的部分。
-
-完整的 v1 → v2 逐行差異 — 每條被刪除的子規則對應到系統提示詞的取代來源、加上各條改寫的理由 — 詳見 [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd)（英文）。
+| Simplicity First — 不加推測性功能 / 抽象 | 是 |
+| Simplicity First — 不為不可能情境寫錯誤處理 | 是 |
+| Surgical Changes — 不順手重構 | 是 |
+| Surgical Changes — 符合既有風格 | 是 |
+| Think Before Coding — 明說假設 | 部分；v2 補上「困惑時停下」 |
+| Goal-Driven Execution — 循環驗證 | 部分；v2 補上使用者端的宣告式 framing |
 
 ## 與上游的關係
 

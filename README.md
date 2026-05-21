@@ -105,20 +105,16 @@ The repository includes [`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/
 
 ## Why this version is shorter
 
-Cross-reference between [the four original principles](./archived/v1/CLAUDE.md) and the current Claude Code system prompt (Opus 4.7):
+The Opus 4.7 system prompt already covers most of v1's rules (full v1 → v2 diff in [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd)):
 
-| Original principle | Already in system prompt? |
+| v1 principle | In system prompt? |
 |---|---|
-| Simplicity First (no speculative features, no abstractions for single-use code) | Yes — "Don't add features, refactor, or introduce abstractions beyond what the task requires" |
-| Simplicity First (no error handling for impossible scenarios) | Yes — "Don't add error handling, fallbacks, or validation for scenarios that can't happen" |
-| Surgical Changes (don't refactor adjacent code) | Yes — "A bug fix doesn't need surrounding cleanup; a one-shot operation doesn't need a helper" |
-| Surgical Changes (match existing style, don't reformat) | Yes — "Match the scope of your actions to what was actually requested" |
-| Think Before Coding (state assumptions, surface tradeoffs) | Partial — system prompt covers exploratory replies; this skill adds "stop when confused" |
-| Goal-Driven Execution (loop until verified) | Partial — system prompt covers self-verification; this skill adds the user-side declarative framing |
-
-The three reminders that remain are the ones the system prompt does not cover or under-emphasizes.
-
-For the full line-by-line diff between v1 and v2 — every removed sub-rule mapped to its system-prompt replacement, plus the rationale for the rewrites — see [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd).
+| Simplicity First — no speculative features / abstractions | Yes |
+| Simplicity First — no impossible-scenario error handling | Yes |
+| Surgical Changes — no drive-by refactor | Yes |
+| Surgical Changes — match existing style | Yes |
+| Think Before Coding — state assumptions | Partial; v2 adds "stop when confused" |
+| Goal-Driven Execution — loop until verified | Partial; v2 adds user-side declarative framing |
 
 ## Relationship to upstream
 

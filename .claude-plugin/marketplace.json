@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Three reminders for LLM coding pitfalls in Claude Code Opus 4.7+ — Traditional Chinese (Taiwan) localization",
-    "version": "2.1.1"
+    "version": "2.1.2"
   },
   "plugins": [
     {
       "name": "andrej-karpathy-skills",
       "source": "./",
       "description": "Three reminders that complement Claude Code's built-in guidance: stop when confused, every changed line traces to the request, loop on declarative goals. Includes /dec slash command for explicit declarative reframing. Traditional Chinese (Taiwan) localization fork of forrestchang/andrej-karpathy-skills.",
-      "version": "2.1.1",
+      "version": "2.1.2",
       "author": {
         "name": "yelban"
       },
