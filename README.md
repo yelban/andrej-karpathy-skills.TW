@@ -46,9 +46,9 @@ Together with the goal, hand it the verification tool: a test command, a benchma
 - **Declarative**: features with observable outcomes, bug fixes, performance work, refactors with test coverage.
 - **Imperative**: exploratory edits, UI tweaks, prose, anything where "done" is subjective.
 
-### Explicit reframing: `/dec` (bundled with the plugin)
+### Explicit reframing: the `dec` slash command
 
-`/dec <request>` asks the assistant to convert the request into success criteria + verification command + non-goals **without implementing anything**. You confirm, then it executes. Use when you want the declarative discipline applied to a single prompt without changing how you write the rest.
+The command converts the request into success criteria + verification command + non-goals **without implementing anything**. You confirm, then it executes. Use when you want the declarative discipline applied to a single prompt without changing how you write the rest.
 
 ```
 /dec fix the login flicker on first load
@@ -56,22 +56,48 @@ Together with the goal, hand it the verification tool: a test command, a benchma
 
 Returns success criteria (e.g. "Playwright screenshot diff < 2px across 10 runs"), verification command, and explicit non-goals. If the task is too subjective or too small, it replies "not applicable — just do it" instead of forcing a conversion.
 
+> **Note on invocation:** when installed via the plugin (Option A below), Claude Code namespaces the command to `/andrej-karpathy-skills:dec`. For the short `/dec` form, install the command file manually (Option C).
+
 ## Install
 
-**Option A: Claude Code plugin**
+The three reminders and the `/dec` command are independent — pick any combination.
 
-From within Claude Code:
+| | Three reminders | `/dec` command | Mechanism |
+|---|---|---|---|
+| **A. Plugin** | as skill (triggered when relevant) | `/andrej-karpathy-skills:dec` (namespaced) | auto-updates via marketplace |
+| **B. `CLAUDE.md`** | always-on in system prompt | — | per-project file |
+| **C. Manual command** | — | `/dec` (short) | global or per-project file |
+
+**Option A: Claude Code plugin** — skill + namespaced command, both auto-update.
 
 ```
 /plugin marketplace add yelban/andrej-karpathy-skills.TW
 /plugin install andrej-karpathy-skills@karpathy-skills
 ```
 
-**Option B: `CLAUDE.md` per-project**
+**Option B: `CLAUDE.md` per-project** — three reminders always loaded for that project.
 
 ```bash
 curl -o CLAUDE.md https://raw.githubusercontent.com/yelban/andrej-karpathy-skills.TW/main/CLAUDE.md
 ```
+
+**Option C: Manual `/dec` command** — short invocation without the plugin namespace.
+
+```bash
+# Global (all projects)
+mkdir -p ~/.claude/commands
+curl -o ~/.claude/commands/dec.md https://raw.githubusercontent.com/yelban/andrej-karpathy-skills.TW/main/commands/dec.md
+
+# Or per-project
+mkdir -p .claude/commands
+curl -o .claude/commands/dec.md https://raw.githubusercontent.com/yelban/andrej-karpathy-skills.TW/main/commands/dec.md
+```
+
+### Recommended combinations
+
+- **B + C** (no plugin) — `CLAUDE.md` always-on + short `/dec`. Smallest footprint, no plugin marketplace dependency. Manual updates by re-running `curl`.
+- **A only** — single install command, auto-updates, but `/dec` invocation is namespaced and the rules only apply when the skill triggers (not always-on).
+- **A + B** — plugin for `/dec` (namespaced) + `CLAUDE.md` for always-on rules. Some redundancy (skill content overlaps `CLAUDE.md`) but harmless.
 
 ## Using with Cursor
 
