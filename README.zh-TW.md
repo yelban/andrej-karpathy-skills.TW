@@ -103,18 +103,21 @@ curl -o .claude/commands/dec.md https://raw.githubusercontent.com/yelban/andrej-
 
 本倉庫附 [`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc)，設定為 `alwaysApply: true`。詳情見 [`CURSOR.md`](./CURSOR.md)。
 
-## 為什麼新版這麼短
+## 為什麼新版這麼短 — 而 A/B 實證告訴我們什麼
 
-Opus 4.7 系統提示詞已經涵蓋 v1 大部分規則（完整 v1 → v2 逐行對照見 [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd)，英文）：
+最初的論證（基於讀 Opus 4.7 系統提示詞）：v1 大部分規則已被內建提示詞涵蓋、重述會稀釋訊號。完整 v1 → v2 逐行對照見 [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd)（英文）。
 
-| v1 原則 | 系統提示詞已涵蓋？ |
-|---|---|
-| Simplicity First — 不加推測性功能 / 抽象 | 是 |
-| Simplicity First — 不為不可能情境寫錯誤處理 | 是 |
-| Surgical Changes — 不順手重構 | 是 |
-| Surgical Changes — 符合既有風格 | 是 |
-| Think Before Coding — 明說假設 | 部分；v2 補上「困惑時停下」 |
-| Goal-Driven Execution — 循環驗證 | 部分；v2 補上使用者端的宣告式 framing |
+這是觀察判斷、不是量測。所以 2026 年 5 月我們跑了小型 A/B 實證：
+
+- 3 cells：無 CLAUDE.md / v1 upstream (65 行) / v2 我們版 (19 行)
+- 4 個誘發 Karpathy 痛點的 toy task + 最區分維度 T1 ambiguous-bug 加碼 N=10
+- Opus 4.7 受測、Sonnet 4.6 blind judge
+
+**結果：三個 cell 沒有統計顯著差異。** T1 加碼到 N=10 後三 cell 全部 7/10 正確、Fisher exact p = 1.000。30 個 runs 中 **0 個**在編輯前問 clarification——不論哪版規則都沒能可靠觸發「停下來問」。
+
+誠實版結論：在這個 toy task 規模上、CLAUDE.md（不論哪版）對 Opus 4.7 行為的邊際效應**小到 N=10 測不出來**。**任選一版皆可；user-side declarative framing（`/dec`）的槓桿可能比規則檔本身大。**
+
+完整資料、scripts、caveats、以及 Phase 1 (N=3) 一度看起來「v1 顯著優於 v2」最後被 Phase 2 (N=10) 攤平的過程：[`EXPERIMENT.md`](./EXPERIMENT.md)（英文）。
 
 ## 與上游的關係
 

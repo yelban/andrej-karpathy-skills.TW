@@ -103,18 +103,21 @@ curl -o .claude/commands/dec.md https://raw.githubusercontent.com/yelban/andrej-
 
 The repository includes [`.cursor/rules/karpathy-guidelines.mdc`](.cursor/rules/karpathy-guidelines.mdc) with `alwaysApply: true`. See [`CURSOR.md`](./CURSOR.md) for setup details and how it differs from the Claude Code install.
 
-## Why this version is shorter
+## Why this version is shorter — and what an A/B test actually showed
 
-The Opus 4.7 system prompt already covers most of v1's rules (full v1 → v2 diff in [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd)):
+The original rationale (based on reading Opus 4.7's system prompt) was: most of v1's rules now live in the built-in system prompt, so duplicating them dilutes signal. Full v1 → v2 diff in [`archived/v1/NOTE.md`](./archived/v1/NOTE.md#detailed-v1--v2-diff-for-claudemd).
 
-| v1 principle | In system prompt? |
-|---|---|
-| Simplicity First — no speculative features / abstractions | Yes |
-| Simplicity First — no impossible-scenario error handling | Yes |
-| Surgical Changes — no drive-by refactor | Yes |
-| Surgical Changes — match existing style | Yes |
-| Think Before Coding — state assumptions | Partial; v2 adds "stop when confused" |
-| Goal-Driven Execution — loop until verified | Partial; v2 adds user-side declarative framing |
+That argument was a judgment, not a measurement. So in May 2026 we ran a small empirical A/B:
+
+- 3 cells: no CLAUDE.md / v1 upstream (65 lines) / v2 ours (19 lines)
+- 4 toy tasks targeting Karpathy's named pitfalls + N=10 follow-up on the most discriminating task (T1 ambiguous-bug)
+- Opus 4.7 subject, Sonnet 4.6 blind judge
+
+**Result: no statistically significant difference between any cells.** On T1 with N=10 per cell, all three landed at 7/10 correct (Fisher exact p = 1.000 pairwise). 0/30 runs asked clarification before editing — none of the rule sets reliably triggered "stop and ask" behavior on a task that looked superficially singular.
+
+The honest takeaway: at the toy-task scale we tested, the marginal effect of CLAUDE.md (any flavor) on Opus 4.7's behavior is too small to measure with N=10. **Use whichever flavor you prefer; the user-side declarative framing (`/dec`) likely matters more than the rules file itself.**
+
+Full data, scripts, caveats, and the Phase 1 (N=3) result that initially looked like "v1 wins" before Phase 2 (N=10) flattened it: [`EXPERIMENT.md`](./EXPERIMENT.md).
 
 ## Relationship to upstream
 
