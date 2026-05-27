@@ -95,6 +95,31 @@ Returns success criteria (e.g. "Playwright screenshot diff < 2px across 10 runs"
 4. Claude loops to convergence     ← Karpathy's "watch it go"
 ```
 
+#### Works for Codex `/goal` too
+
+OpenAI's Codex CLI shipped its own `/goal` in [v0.128.0 on 2026-04-30](https://developers.openai.com/codex/cli/slash-commands) — eleven days before Claude Code's v2.1.139. Codex's [official goal-writing guidance](https://developers.openai.com/codex/use-cases/follow-goals) lists four things a good goal should specify:
+
+> "what Codex should achieve, what it shouldn't change, how it should validate progress, and when it should stop"
+
+— and asserts **"Codex should know what 'done' means before it starts."** This is exactly the contract `/dec` writes:
+
+| Codex docs requirement | `/dec` output block |
+|---|---|
+| what Codex should achieve | **Success criteria** |
+| what it shouldn't change | **Non-goals** |
+| how it should validate progress | **Verification command** |
+| when it should stop | success + non-goals (the contract *is* the stop condition) |
+
+Three confirmed values of running `/dec` before opening a Codex `/goal`:
+
+1. **You don't have to remember Codex's four-part checklist** — `/dec`'s prompt template enforces all four blocks every time.
+2. **`/dec` requires each block to be measurable** — the verbatim text in [`commands/dec.md`](./commands/dec.md) is "verifiable end state (tests passing / output match / performance threshold / lint clean)". Codex docs say goals should be testable but don't ship a template that enforces this on the user side.
+3. **`/dec`'s "not applicable — just do it" short-circuit for subjective tasks** (UI tweaks, prose, single-line renames) has no documented equivalent in Codex's `/goal`. Opening `/goal` on a subjective task is exactly what Codex docs warn against: **"Avoid using a goal for a loose list of unrelated work."**
+
+**Using `/dec` with Codex**: `/dec` is currently a Claude Code slash command. To use the same contract against Codex, run `/dec` in Claude Code first, then paste the ready-to-use `/goal` line `/dec` emits into Codex CLI's `/goal "..."`. The prompt template itself ([`commands/dec.md`](./commands/dec.md)) is plain text and vendor-agnostic.
+
+> **Caveat — design claim, not empirical.** We have **not** run a controlled benchmark of `/dec` + Codex `/goal`. The mapping above is derived by reading `/dec`'s prompt template against Codex's [published goal-writing guidance](https://developers.openai.com/codex/use-cases/follow-goals). The N=40 A/B test in [`EXPERIMENT.md`](./EXPERIMENT.md) measured CLAUDE.md effects on Opus 4.7, not `/dec` itself.
+
 #### Why this is the real leverage
 
 User-side discipline that does not depend on which model is on the other side. Our [empirical A/B test](./EXPERIMENT.md) found CLAUDE.md rules had no measurable effect on Opus 4.7's coding behavior — but a well-formed contract plus an autonomous evaluation loop is leverage **you** control, not leverage you hope the model picks up. It also doesn't depreciate when Opus 4.7 → 4.8 → 5.0; the `/dec` template and `/goal` evaluator stay the same.
