@@ -113,10 +113,10 @@ OpenAI 的 Codex CLI 比 Claude Code 早 11 天於 [v0.128.0（2026-04-30）](ht
 開 Codex `/goal` 之前先跑 `/dec` 的三個 confirmed value：
 
 1. **你不用記 Codex 那條四點 checklist**——`/dec` 的 prompt template 每次都強制產出四塊。
-2. **`/dec` 要求每塊都 measurable**——[`commands/dec.md`](./commands/dec.md) prompt 原文寫「可驗證的端狀態（測試通過 / 輸出比對 / 效能門檻 / lint clean）」。Codex docs 說 goal 該 testable、但沒附 template 在 user 端 enforce 這件事。
+2. **`/dec` 要求每塊都 measurable**——[`plugin/commands/dec.md`](./plugin/commands/dec.md) prompt 原文寫「可驗證的端狀態（測試通過 / 輸出比對 / 效能門檻 / lint clean）」。Codex docs 說 goal 該 testable、但沒附 template 在 user 端 enforce 這件事。
 3. **`/dec` 對主觀任務的「不適用，建議直接做」short-circuit**（UI 微調、文案、單行 rename）—— Codex `/goal` 沒有 documented 等價功能。對主觀任務開 `/goal` 正是 Codex docs 警告的：**"Avoid using a goal for a loose list of unrelated work."**
 
-**用 `/dec` 配 Codex 的方式**：`/dec` 目前是 Claude Code 的 slash command。要把同一份契約用在 Codex、先在 Claude Code 跑 `/dec`、然後把 `/dec` 輸出的那條 ready-to-use `/goal` 指令直接貼到 Codex CLI 的 `/goal "..."`。Prompt template 本身（[`commands/dec.md`](./commands/dec.md)）是純文字、不綁 vendor。
+**用 `/dec` 配 Codex 的方式**：`/dec` 目前是 Claude Code 的 slash command。要把同一份契約用在 Codex、先在 Claude Code 跑 `/dec`、然後把 `/dec` 輸出的那條 ready-to-use `/goal` 指令直接貼到 Codex CLI 的 `/goal "..."`。Prompt template 本身（[`plugin/commands/dec.md`](./plugin/commands/dec.md)）是純文字、不綁 vendor。
 
 > **Caveat——這是設計層面的聲明、不是實證。** 我們**沒有**對 `/dec` + Codex `/goal` 跑控制組實驗。上面的對應是讀 `/dec` 的 prompt template 對照 Codex [published goal-writing guidance](https://developers.openai.com/codex/use-cases/follow-goals) 推得。[`EXPERIMENT.md`](./EXPERIMENT.md) 那個 N=40 A/B 測的是 CLAUDE.md 對 Opus 4.7 的效應、不是 `/dec` 本身。
 
@@ -167,7 +167,7 @@ curl -o CLAUDE.md https://raw.githubusercontent.com/yelban/andrej-karpathy-skill
 ```bash
 mkdir -p ~/.claude/commands
 curl -o ~/.claude/commands/dec.md \
-  https://raw.githubusercontent.com/yelban/andrej-karpathy-skills.TW/main/commands/dec.md
+  https://raw.githubusercontent.com/yelban/andrej-karpathy-skills.TW/main/plugin/commands/dec.md
 ```
 
 **選項 D：`git clone` + symlink** — `/dec` 透過 `git pull` 自動更新；`CLAUDE.md` 整檔 `cp` 作為起點、之後依專案自由修改。
@@ -180,7 +180,7 @@ git clone https://github.com/yelban/andrej-karpathy-skills.TW \
 
 # 2. 把短的 /dec 指令 symlink 到全域（命令本身 stateless、跟著上游走就好）
 mkdir -p ~/.claude/commands
-ln -sf ~/.claude/external/andrej-karpathy-skills.TW/commands/dec.md \
+ln -sf ~/.claude/external/andrej-karpathy-skills.TW/plugin/commands/dec.md \
   ~/.claude/commands/dec.md
 
 # 3. CLAUDE.md 放哪——擇一。
