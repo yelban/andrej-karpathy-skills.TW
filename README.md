@@ -38,17 +38,66 @@ Together with the goal, hand it the verification tool: a test command, a benchma
 - **Declarative**: features with observable outcomes, bug fixes, performance work, refactors with test coverage.
 - **Imperative**: exploratory edits, UI tweaks, prose, anything where "done" is subjective.
 
-### Explicit reframing: the `dec` slash command
+### `/dec` and `/goal`: the boundary-setter and the autonomous loop
 
-The command converts the request into success criteria + verification command + non-goals **without implementing anything**. You confirm, then it executes. Use when you want the declarative discipline applied to a single prompt without changing how you write the rest.
+Two slash commands map onto Karpathy's two verbs — "give it success criteria" and "watch it go":
+
+| | `/dec` (this repo) | `/goal` (built into Claude Code v2.1.139+) |
+|---|---|---|
+| Phase | **Before action**: rewrites a vague request into a contract | **During action**: keeps Claude turning until the contract is met |
+| Action | Rewrites your input; **does not implement yet** | After each turn a small fast model evaluates whether the contract holds; if not, Claude starts another turn automatically |
+| Persistence | One-shot transformation; you confirm before execution | Session-scoped until `/goal clear` |
+| Evaluator | **You** (review the contract before execution) | **Haiku** (yes/no judge reading the transcript) |
+| Karpathy verb | "give it success criteria" | "watch it go" |
+
+#### `/dec` alone
 
 ```
 /dec fix the login flicker on first load
 ```
 
-Returns success criteria (e.g. "Playwright screenshot diff < 2px across 10 runs"), verification command, and explicit non-goals. If the task is too subjective or too small, it replies "not applicable — just do it" instead of forcing a conversion.
+Returns success criteria (e.g. "Playwright screenshot diff < 2px across 10 runs"), a verification command, and explicit non-goals. If the task is too subjective or too small, it replies "not applicable — just do it" instead of forcing a conversion. Good for one-shot prompts where you want the declarative discipline without committing to autonomous looping.
 
-> **Note on invocation:** when installed via the plugin (Option A below), Claude Code namespaces the command to `/andrej-karpathy-skills:dec`. For the short `/dec` form, install the command file manually (Option C).
+#### `/dec` as the boundary-setter for `/goal`
+
+`/goal` is only as good as the condition string you feed it. Vague conditions never converge:
+
+```
+❌ /goal "make the login page not flicker"
+   How does Haiku verify "no flicker"? Watch screenshots? Read console?
+   The evaluator answers always-yes or always-no — the loop never converges.
+
+✅ /dec fix the login flicker on first load
+   →  Success:   Playwright screenshot diff < 2px across 10 runs
+      Verify:    npx playwright test login-flicker.spec.ts
+      Non-goals: do not refactor the login component; do not touch auth
+
+✅ /goal "npx playwright test login-flicker.spec.ts passes AND
+          the login component file is unchanged from baseline"
+   Haiku reads pytest output from the transcript and judges deterministically.
+   The loop actually converges.
+```
+
+`/dec` enforces three boundaries that `/goal` alone cannot:
+
+1. **Machine-checkable success conditions** — "diff < 2px", "10 passed", "p95 < X ms" map cleanly to evaluator yes/no.
+2. **A verification command embedded in the contract** — forces Claude to actually run the check, not statically reason "this should work now". (Patching-without-running was a real failure mode in our T4 declarative-loop test.)
+3. **Explicit non-goals** — `/goal`'s condition string is compound: `"X passes AND test files unchanged AND no new files in src/legacy/"`. The evaluator checks each clause.
+
+#### The full pipeline
+
+```
+1. /dec <vague request>            ← rewrite as contract (success + verify + non-goals)
+2. you review the contract         ← human confirms direction
+3. /goal "<success + non-goals>"   ← Haiku takes over as judge
+4. Claude loops to convergence     ← Karpathy's "watch it go"
+```
+
+#### Why this is the real leverage
+
+User-side discipline that does not depend on which model is on the other side. Our [empirical A/B test](./EXPERIMENT.md) found CLAUDE.md rules had no measurable effect on Opus 4.7's coding behavior — but a well-formed contract plus an autonomous evaluation loop is leverage **you** control, not leverage you hope the model picks up. It also doesn't depreciate when Opus 4.7 → 4.8 → 5.0; the `/dec` template and `/goal` evaluator stay the same.
+
+> **Note on invocation:** when installed via the plugin (Option A below), Claude Code namespaces the command to `/andrej-karpathy-skills:dec`. For the short `/dec` form, install the command file manually (Option C). The built-in `/goal` is always available regardless of install method.
 
 ## What the assistant gets
 
