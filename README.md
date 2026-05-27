@@ -38,7 +38,7 @@ Together with the goal, hand it the verification tool: a test command, a benchma
 - **Declarative**: features with observable outcomes, bug fixes, performance work, refactors with test coverage.
 - **Imperative**: exploratory edits, UI tweaks, prose, anything where "done" is subjective.
 
-### `/dec` and `/goal`: the boundary-setter and the autonomous loop
+### `/dec`: the boundary-setter that makes `/goal` actually converge
 
 Two slash commands map onto Karpathy's two verbs — "give it success criteria" and "watch it go":
 
