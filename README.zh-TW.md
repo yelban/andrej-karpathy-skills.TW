@@ -2,6 +2,8 @@
 
 一份精簡的 `CLAUDE.md`，補強 Claude Code 內建系統提示詞未涵蓋的部分；內容衍生自 [Andrej Karpathy 對 LLM 編碼陷阱的觀察](https://x.com/karpathy/status/2015883857489522876)。
 
+> **主要 repo**：[`yelban/andrej-karpathy-skills.TW`](https://github.com/yelban/andrej-karpathy-skills.TW)（也鏡像到 [`aeopress/andrej-karpathy-skills.TW`](https://github.com/aeopress/andrej-karpathy-skills.TW)）
+
 **`CLAUDE.md` 三條規則、一個 slash command（`/dec`），加上一份說「規則檔幾乎不動 Opus 4.7」的 A/B 實證——所以真正的槓桿是 `/dec` + Claude Code 內建的 `/goal`，不是規則檔本身。**
 
 為什麼要裝這份：

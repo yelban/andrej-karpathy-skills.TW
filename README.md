@@ -2,6 +2,8 @@
 
 A small `CLAUDE.md` that complements Claude Code's built-in guidance, derived from [Andrej Karpathy's observations](https://x.com/karpathy/status/2015883857489522876) on LLM coding pitfalls.
 
+> **Source of truth**: [`yelban/andrej-karpathy-skills.TW`](https://github.com/yelban/andrej-karpathy-skills.TW) (also mirrored at [`aeopress/andrej-karpathy-skills.TW`](https://github.com/aeopress/andrej-karpathy-skills.TW))
+
 **Three rules in `CLAUDE.md`, one slash command (`/dec`), and an A/B test that says the rules barely move Opus 4.7 — so the real leverage is `/dec` + Claude Code's built-in `/goal`, not the rules file.**
 
 Why you'd install this:
